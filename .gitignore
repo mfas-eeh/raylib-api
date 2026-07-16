@@ -1,0 +1,54 @@
+# ====================================================================
+# Compiles & Build Artifacts
+# ====================================================================
+# Ignore compiled object files, static libraries, and executables
+*.o
+*.obj
+*.a
+*.lib
+*.so
+*.dll
+*.dylib
+*.out
+*.exe
+
+# Precompiled headers (if you use them for faster builds)
+*.gch
+*.pch
+
+# ====================================================================
+# Build Directories
+# ====================================================================
+# Ignore CMake build directories and output bins
+/[Bb]uild/
+/[Bb]in/
+/[Oo]ut/
+
+# If you use Make directly
+.deps/
+.libs/
+
+# ====================================================================
+# IDEs and Editors
+# ====================================================================
+# Neovim / Vim swap and backup files
+*~
+*.swp
+*.swo
+.netrwhist
+
+# VS Code
+.vscode/
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+
+# CLion / JetBrains
+.idea/
+cmake-build-*/
+
+# ====================================================================
+# Operating System files
+# ====================================================================
+.DS_Store
+Thumbs.db
