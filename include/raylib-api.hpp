@@ -51,5 +51,56 @@ namespace Animations
     namespace Two_D
     {
 
+        struct AnimationComponent
+        {
+            uint8_t* total_variant_frames;      // total columns for each row
+            uint16_t animation_speed;
+            uint16_t curr_index{0uz};
+            uint8_t total_animations;
+            uint8_t curr_animation{0uz};
+        };
+
+        class AnimationManager
+        {
+            private:
+                AnimationComponent anim_comp;
+                Texture2D** entity_animations;
+
+            public:
+                AnimationManager(AnimationComponent& anim, const char* file_path, std::string* folder)
+                : anim_comp(anim)
+                {
+                    entity_animations = new Texture2D*[anim_comp.total_animations];     //allocating total rows
+                    for (auto i{0uz}; i < anim_comp.total_animations; ++i)
+                    {
+                        entity_animations[i] = new Texture2D[anim_comp.total_variant_frames[i]]; // allocating different number of columns
+                    }
+
+                    for (auto i{0uz}; i < anim_comp.total_animations; ++i)
+                    {
+                        for (auto j{0uz}; j < anim_comp.total_variant_frames[i]; ++j)
+                        {
+                            std::string anim_frame_file = file_path + *(folder + i) + std::to_string(j+1) + ".png";
+                            entity_animations[i][j] = LoadTexture(anim_frame_file.c_str());
+                        }
+                    }   
+                }
+
+                AnimationManager(const AnimationManager& other) = delete;
+                AnimationManager& operator=(const AnimationManager& other) = delete;
+
+                void draw();
+                void update();
+                void clear_vram();
+
+                ~AnimationManager()
+                {
+                    for (auto i{0uz}; i < anim_comp.total_animations; ++i)
+                    {
+                        delete[] entity_animations[i];
+                    }
+                    delete[] entity_animations;
+                }
+        };
     };
 };
