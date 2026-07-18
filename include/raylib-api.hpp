@@ -90,6 +90,7 @@ namespace Animations
                 AnimationManager& operator=(const AnimationManager& other) = delete;
 
                 void draw();
+                void setAnimation(const uint8_t& newAnimation);
                 void update();
                 void clear_vram();
 

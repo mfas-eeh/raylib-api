@@ -21,6 +21,7 @@ void Animations::One_D::AnimationManager::clear_vram()
 }
 
 
+
 void Animations::Two_D::AnimationManager::clear_vram()
 {
     for (auto i{0uz}; i < anim_comp.total_animations; ++i)
@@ -31,3 +32,5 @@ void Animations::Two_D::AnimationManager::clear_vram()
         }
     }
 }
+
+void Animations::Two_D::AnimationManager::setAnimation(const uint8_t& newAnimation) {   anim_comp.curr_animation = newAnimation;    }
