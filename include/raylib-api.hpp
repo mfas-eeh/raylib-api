@@ -27,7 +27,7 @@ namespace Animations
                 {
                     for (auto i{0uz}; i < anim_var.total_frames; ++i)
                     {
-                        std::string anim_file_path = file_path + std::to_string(i) + ".png";
+                        std::string anim_file_path = file_path + std::to_string(i+1) + ".png";
                         animation_frames[i] = LoadTexture(anim_file_path.c_str());
                     }
                 }
