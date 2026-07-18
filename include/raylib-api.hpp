@@ -1,5 +1,6 @@
 #pragma once
 
+#include <iostream>
 #include "raylib.h"
 #include <string>
 #include <cstdint>      // required for fixed size integers
@@ -32,18 +33,13 @@ namespace Animations
                     }
                 }
 
-                AnimationManager(const AnimationManager& other)
-                {
-                    this->anim_var = other.anim_var;
-                    this->animation_frames = new Texture2D[this->anim_var.total_frames];
-                    for (auto i{0uz}; i < this->anim_var.total_frames; ++i)
-                    {
-                        this->animation_frames[i] = other.animation_frames[i];
-                    }
-                }
+                AnimationManager(const AnimationManager& other) = delete;
+                AnimationManager& operator=(const AnimationManager& other) = delete;
 
                 void draw(Vector2 pos, float scale, float rot, Color col);
                 void update();
+
+                void clear_vram();
 
                 ~AnimationManager()
                 {
