@@ -1,5 +1,4 @@
 #include "raylib-api.hpp"
-#include "raylib.h"
 
 void Animations::One_D::AnimationManager::draw(Vector2 pos, float scale, float rot, Color col)
 {
@@ -13,4 +12,10 @@ void Animations::One_D::AnimationManager::update()
     {
         anim_var.curr_index = 0;
     }
+}
+
+void Animations::One_D::AnimationManager::clear_vram()
+{
+    for (auto i{0uz}; i < anim_var.total_frames; ++i)
+        UnloadTexture(animation_frames[i]);
 }
