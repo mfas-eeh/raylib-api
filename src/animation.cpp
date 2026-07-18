@@ -19,3 +19,15 @@ void Animations::One_D::AnimationManager::clear_vram()
     for (auto i{0uz}; i < anim_var.total_frames; ++i)
         UnloadTexture(animation_frames[i]);
 }
+
+
+void Animations::Two_D::AnimationManager::clear_vram()
+{
+    for (auto i{0uz}; i < anim_comp.total_animations; ++i)
+    {
+        for (auto j {0uz}; j < anim_comp.total_variant_frames[i]; ++j)
+        {
+            UnloadTexture(entity_animations[i][j]);
+        }
+    }
+}
