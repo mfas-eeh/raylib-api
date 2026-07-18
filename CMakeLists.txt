@@ -1,10 +1,12 @@
 cmake_minimum_required(VERSION 3.10.0)
 project(raylib_api VERSION 0.1.0 LANGUAGES C CXX)
+set(CMAKE_CXX_STANDARD 26)
 
 # 1. Change from add_executable to add_library with STATIC
 # Replace main.cpp with the actual source files of your API (e.g., src/engine.cpp)
 add_library(raylib_api STATIC 
     src/engine.cpp
+    src/animation.cpp
 )
 
 # 2. Expose your API's own header directory to the games using it
