@@ -104,4 +104,38 @@ namespace Animations
                 }
         };
     };
+
+    // an alternative to above types of animations as it is memory friendly and easy way to implement
+    namespace SpriteSheet
+    {
+        struct SheetComponent
+        {
+            uint8_t* total_variant_frames;
+            uint16_t frame_width, frame_height;     // individual width and height of a single sprite
+            uint8_t curr_frame;             // which animation frame in each row
+            uint8_t curr_animation;     //  which row of spritesheet
+
+        };
+
+        class AnimationManager
+        {
+            private:
+                SheetComponent sheet_comp;
+                Texture2D spritesheet;
+                Rectangle source_rect;
+
+            public:
+                AnimationManager(SheetComponent& sheet, Texture2D& s_sheet)
+                : sheet_comp(sheet), spritesheet(s_sheet), source_rect({0.f, 0.f, 0.f, 0.f})
+                { }
+
+                AnimationManager(const AnimationManager& other) = delete;
+                AnimationManager& operator=(const AnimationManager& other) = delete;
+
+                void draw(const Vector2& pos);
+                void update();
+                void setAnimation(const uint8_t& newAnimation);
+                void clear_vram();
+        };
+    };
 };
