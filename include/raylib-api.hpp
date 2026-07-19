@@ -125,7 +125,7 @@ namespace Animations
                 Texture2D spritesheet;
                 Rectangle source_rect;
 
-                float anim_frame_index{0uz};
+                float anim_frame_index;
 
             public:
                 AnimationManager(SheetComponent& sheet, Texture2D& s_sheet)
