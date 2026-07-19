@@ -89,7 +89,7 @@ namespace Animations
                 AnimationManager(const AnimationManager& other) = delete;
                 AnimationManager& operator=(const AnimationManager& other) = delete;
 
-                void draw();
+                void draw(const Vector2& pos, const float& rot, const float& scale);
                 void setAnimation(const uint8_t& newAnimation);
                 void update();
                 void clear_vram();
