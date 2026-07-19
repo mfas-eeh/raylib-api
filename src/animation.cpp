@@ -41,9 +41,9 @@ void Animations::Two_D::AnimationManager::update()
     anim_comp.curr_index++;
     if (anim_comp.curr_index >= (anim_comp.animation_speed * 
         anim_comp.total_variant_frames[anim_comp.curr_animation]))
-        {
+    {
             anim_comp.curr_index = 0;
-        }
+    }
 }
 
 
@@ -54,8 +54,13 @@ void Animations::SpriteSheet::AnimationManager::draw(const Vector2& pos)
 }
 void Animations::SpriteSheet::AnimationManager::update()
 {
-    sheet_comp.curr_frame = (sheet_comp.curr_frame + 1) % 
-    sheet_comp.total_variant_frames[sheet_comp.curr_animation];
+    anim_frame_index += GetFrameTime();
+
+    if (anim_frame_index >= sheet_comp.animation_speed)
+    {
+        anim_frame_index = 0.0f;
+        sheet_comp.curr_frame = (sheet_comp.curr_frame + 1) % sheet_comp.total_variant_frames[sheet_comp.curr_animation];
+    }
 
     source_rect = {
         static_cast<float>(sheet_comp.curr_frame * sheet_comp.frame_width),

@@ -111,10 +111,11 @@ namespace Animations
         struct SheetComponent
         {
             uint8_t* total_variant_frames;
-            uint16_t frame_width, frame_height;     // individual width and height of a single sprite
+            float animation_speed;
+            uint16_t frame_width;
+            uint16_t frame_height;     // individual width and height of a single sprite
             uint8_t curr_frame;             // which animation frame in each row
             uint8_t curr_animation;     //  which row of spritesheet
-
         };
 
         class AnimationManager
@@ -123,6 +124,8 @@ namespace Animations
                 SheetComponent sheet_comp;
                 Texture2D spritesheet;
                 Rectangle source_rect;
+
+                float anim_frame_index{0uz};
 
             public:
                 AnimationManager(SheetComponent& sheet, Texture2D& s_sheet)
