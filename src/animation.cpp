@@ -45,3 +45,27 @@ void Animations::Two_D::AnimationManager::update()
             anim_comp.curr_index = 0;
         }
 }
+
+
+
+void Animations::SpriteSheet::AnimationManager::draw(const Vector2& pos)
+{
+    DrawTextureRec(spritesheet, source_rect, pos, WHITE);
+}
+void Animations::SpriteSheet::AnimationManager::update()
+{
+    sheet_comp.curr_frame = (sheet_comp.curr_frame + 1) % 
+    sheet_comp.total_variant_frames[sheet_comp.curr_animation];
+
+    source_rect = {
+        static_cast<float>(sheet_comp.curr_frame * sheet_comp.frame_width),
+        static_cast<float>(sheet_comp.curr_animation * sheet_comp.frame_height),
+        static_cast<float>(sheet_comp.frame_width),
+        static_cast<float>(sheet_comp.frame_height)
+    };
+}
+void Animations::SpriteSheet::AnimationManager::setAnimation(const uint8_t& newAnimation)   {   sheet_comp.curr_animation = newAnimation;   }
+void Animations::SpriteSheet::AnimationManager::clear_vram()
+{
+    UnloadTexture(spritesheet);
+}
