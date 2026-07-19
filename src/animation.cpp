@@ -44,5 +44,4 @@ void Animations::Two_D::AnimationManager::update()
         {
             anim_comp.curr_index = 0;
         }
-        std::cout << anim_comp.curr_index << std::endl;
 }
