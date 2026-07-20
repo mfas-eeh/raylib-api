@@ -4,8 +4,9 @@
 #include <raylib.h>
 #include <string>
 #include <cstdint>      // required for fixed size integers
-#include <type_traits>
-#include <variant>
+#include <type_traits>      // to treat specific types with templates
+#include <variant>      // declaring compile-time variables and compile-time opt.
+
 
 // all the code related to animation management
 namespace Animations
@@ -174,8 +175,13 @@ namespace UI
         // constructor that will compile if T = Texture2D
         NewButton(const Texture2D& btn_tex, const Vector2& pos, const float& btn_scale, const Color& col)
         requires std::is_same_v<T, Texture2D> 
-        : button_object(btn_tex), position(pos), button_outer_prop(btn_scale), color(col), button_tex_rect({pos.x, pos.y, (float)btn_tex.width, (float)btn_tex.height})
-        {}
+        : button_object(btn_tex), position(pos), button_outer_prop(btn_scale), color(col)
+        {
+            button_tex_rect = {position.x, position.y, 
+                static_cast<float>(button_object.width * button_outer_prop), 
+                static_cast<float>(button_object.height * button_outer_prop)
+            };
+        }
 
         void draw()
         {
@@ -190,8 +196,34 @@ namespace UI
 
     };
 
-    namespace Button_Prop
+    namespace Button_Behaviour
     {
+        template <typename T>
+        bool check_hover(const NewButton<T>& button)
+        {
+            Vector2 mouse_pos = GetMousePosition();
+            if constexpr (std::is_same_v<T, Rectangle>) 
+            {
+                return CheckCollisionPointRec(mouse_pos, button.button_object);
+            } else {
+                return CheckCollisionPointRec(mouse_pos, button.button_tex_rect);
+            }
+        }
 
+        template <typename T>
+        bool check_click(const NewButton<T>& button)
+        {
+            Vector2 mouse_pos = GetMousePosition();
+            if constexpr (std::is_same_v<T, Rectangle>)
+            {
+                return (
+                    CheckCollisionPointRec(mouse_pos, button.button_object) and (IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
+                );
+            } else {
+                return (
+                    CheckCollisionPointRec(mouse_pos, button.button_tex_rect) and (IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
+                );
+            }
+        }
     };
 };
