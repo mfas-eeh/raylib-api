@@ -1,10 +1,13 @@
 #pragma once
 
 #include <iostream>
-#include "raylib.h"
+#include <raylib.h>
 #include <string>
 #include <cstdint>      // required for fixed size integers
+#include <type_traits>
+#include <variant>
 
+// all the code related to animation management
 namespace Animations
 {
     // Two seperate type of animations i.e for a single component and a collective character
@@ -140,5 +143,55 @@ namespace Animations
                 void setAnimation(const uint8_t& newAnimation);
                 void clear_vram();
         };
+    };
+};
+
+
+
+// all the code related to UI
+namespace UI
+{
+    template <typename T>
+    struct NewButton
+    {
+        static_assert(
+            std::is_same_v<T, Rectangle> || std::is_same_v<T, Texture2D>,
+            "Button requires a rectangle or texture as parameter, no other type allowed"
+        );
+
+        T button_object;
+        [[no_unique_address]] std::conditional_t<std::is_same_v<T, Texture2D>, Rectangle, std::monostate> button_tex_rect;
+        [[no_unique_address]] std::conditional_t<std::is_same_v<T, Texture2D>, Vector2, std::monostate> position;
+        float button_outer_prop;
+        Color color;
+
+
+        // constructor that will compile if T = Rectangle
+        NewButton(const Rectangle& rect, const float& round, const Color& col) requires std::is_same_v<T, Rectangle> 
+        : button_object(rect), button_outer_prop(round), color(col)
+        {}
+
+        // constructor that will compile if T = Texture2D
+        NewButton(const Texture2D& btn_tex, const Vector2& pos, const float& btn_scale, const Color& col)
+        requires std::is_same_v<T, Texture2D> 
+        : button_object(btn_tex), position(pos), button_outer_prop(btn_scale), color(col), button_tex_rect({pos.x, pos.y, (float)btn_tex.width, (float)btn_tex.height})
+        {}
+
+        void draw()
+        {
+            if constexpr (std::is_same_v<T, Texture2D>)  {
+                DrawTextureEx(button_object, position, 0.f, button_outer_prop, color);
+            } else {
+                DrawRectangleRounded(button_object, button_outer_prop, 1, color);
+            }
+        }
+
+        void clear_vram() requires std::is_same_v<T, Texture2D>  {     UnloadTexture(button_object);     }
+
+    };
+
+    namespace Button_Prop
+    {
+
     };
 };
