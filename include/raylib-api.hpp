@@ -163,13 +163,14 @@ namespace UI
         T button_object;
         [[no_unique_address]] std::conditional_t<std::is_same_v<T, Texture2D>, Rectangle, std::monostate> button_tex_rect;
         [[no_unique_address]] std::conditional_t<std::is_same_v<T, Texture2D>, Vector2, std::monostate> position;
+
         float button_outer_prop;
         Color color;
-
+        [[no_unique_address]] std::conditional_t<std::is_same_v<T, Rectangle>, Color, std::monostate> slider_color;
 
         // constructor that will compile if T = Rectangle
-        NewButton(const Rectangle& rect, const float& round, const Color& col) requires std::is_same_v<T, Rectangle> 
-        : button_object(rect), button_outer_prop(round), color(col)
+        NewButton(const Rectangle& rect, const float& round, const Color& col, const Color& s_color) requires std::is_same_v<T, Rectangle> 
+        : button_object(rect), button_outer_prop(round), color(col), slider_color(s_color)
         {}
 
         // constructor that will compile if T = Texture2D
@@ -223,6 +224,19 @@ namespace UI
                 return (
                     CheckCollisionPointRec(mouse_pos, button.button_tex_rect) and (IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
                 );
+            }
+        }
+
+        template <typename T>
+        void add_slider(const NewButton<T>& button, T& slider_rect) requires std::is_same_v<T, Rectangle>
+        {
+            if (check_hover(button))
+            {
+                if (slider_rect.width < button.button_object.width)
+                    slider_rect.width += 15.f;
+                DrawRectangleRounded(slider_rect, button.button_outer_prop, 1, button.slider_color);
+            } else {
+                slider_rect.width = 0.f;
             }
         }
     };
