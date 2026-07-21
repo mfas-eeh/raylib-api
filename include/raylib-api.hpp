@@ -239,5 +239,17 @@ namespace UI
                 slider_rect.width = 0.f;
             }
         }
+
+        template <typename T>
+        void hover_tex_effect(NewButton<T>& button, T& newTexture) requires std::is_same_v<T, Texture2D>
+        {
+            if (check_hover(button))
+            {
+                button.color = GRAY;
+            } else {
+                button.color = WHITE;
+            }
+        }
+
     };
 };
