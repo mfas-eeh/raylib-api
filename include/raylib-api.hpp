@@ -256,8 +256,6 @@ namespace UI
 
 namespace VisualEffects
 {
-    void apply_pulse_glow(Color& object_color, const float& speed);
-    void apply_flash();
+    void apply_flash(const Rectangle& rect, float& flash_index, const float& decay_speed, const Color& color, const float& round = 0.f);
     void apply_rgb(Color& object_color, const float& speed = 2.f);
-    void apply_outline(const Rectangle& rect, const float& round, const float& thickness, const Color& color);
 };
