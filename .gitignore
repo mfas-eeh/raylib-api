@@ -13,7 +13,7 @@
 *.exe
 
 # Precompiled headers (if you use them for faster builds)
-*.gch
+/include/pch.gch.hpp
 *.pch
 
 # ====================================================================
