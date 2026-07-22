@@ -247,6 +247,12 @@ namespace UI
     };
 };          
 
+struct Circle
+{
+    float x, y;
+    float radius;
+};
+
 namespace VisualEffects
 {
     void apply_flash(const Rectangle& rect, float& flash_index, const float& decay_speed, const Color& color, const float& round = 0.f);
@@ -256,4 +262,76 @@ namespace VisualEffects
     inline bool is_splash = false;
 
     void display_splash_screen(const Vector2& pos, const bool& condition);
+
+
+    // creating a seperate namespace for particles which consists of a Component struct and Manager class
+    // Three Types accepted: Circle, Texture2D, Animations::One_D
+    namespace Particles
+    {
+        inline int max_particles{1000};
+
+        template <typename T>
+        void allocate_memory(T*& arr)   {   arr = new T[max_particles];     }
+
+        template <typename T>
+        void free_memory(T*& arr)   {   delete[] arr;  }
+
+        template <typename T>
+        struct Components
+        {
+            static_assert(
+                std::is_same_v<T, Texture2D> || std::is_same_v<T, Circle> || std::is_same_v<T, Animations::One_D::AnimationManager>,
+                "Particles require a Circle, Texture2D or Animation::One_D at least"
+            );
+
+            [[no_unique_address]] std::conditional_t<std::is_same_v<T, Circle>, Circle*, std::monostate> particle_circles;
+            //[[no_unique_address]] std::conditional_t<std::is_same_v<T, Texture2D>, Texture2D, std::monostate> particle_tex[MAX_PARTICLES];
+
+            Vector2* velocities;
+            float* life_time;
+            Color* color;
+            
+        };
+
+        template <typename T>
+        class ParticleManager
+        {
+            private:
+                Components<T> comp;
+
+            public:
+                ParticleManager() 
+                {
+                    allocate_memory(comp.particle_circles);
+                    allocate_memory(comp.velocities); 
+                    allocate_memory(comp.life_time);
+                    allocate_memory(comp.color);
+                }
+
+                void load_data(const Vector2& pos)
+                {
+                    for (auto i{0uz}; i < max_particles; ++i)
+                    {
+                        comp.particle_circles[i] = {pos.x, pos.y, 5.f};
+
+                        float vel_x_range = GetRandomValue(-7, 8), vel_y_range = GetRandomValue(-4, 5);
+                        comp.velocities[i] = {
+                            static_cast<float>(vel_x_range), static_cast<float>(vel_y_range)
+                        } ;
+
+                        comp.life_time[i] = 5.f;
+                        comp.color[i] = WHITE;
+                    }
+
+                }
+
+                ~ParticleManager()
+                {
+                    free_memory(comp.particle_circles);
+                    free_memory(comp.velocities);
+                    free_memory(comp.life_time);
+                    free_memory(comp.color);
+                }
+        };
+    };
 };
