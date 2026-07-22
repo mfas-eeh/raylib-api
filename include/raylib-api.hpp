@@ -6,6 +6,7 @@
 #include <cstdint>      // required for fixed size integers
 #include <type_traits>      // to treat specific types with templates
 #include <variant>      // declaring compile-time variables and compile-time opt.
+#include <cmath>
 
 
 // all the code related to animation management
@@ -250,6 +251,13 @@ namespace UI
                 button.color = WHITE;
             }
         }
-
     };
+};          
+
+namespace VisualEffects
+{
+    void apply_pulse_glow(Color& object_color, const float& speed);
+    void apply_flash();
+    void apply_rgb(Color& object_color, const float& speed = 2.f);
+    void apply_outline(const Rectangle& rect, const float& round, const float& thickness, const Color& color);
 };
