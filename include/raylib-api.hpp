@@ -258,4 +258,9 @@ namespace VisualEffects
 {
     void apply_flash(const Rectangle& rect, float& flash_index, const float& decay_speed, const Color& color, const float& round = 0.f);
     void apply_rgb(Color& object_color, const float& speed = 2.f);
+
+    inline float splash_radius{0.f}, splash_speed{10.f};
+    inline bool is_splash = false;
+
+    void display_splash_screen(const Vector2& pos, const bool& condition);
 };
