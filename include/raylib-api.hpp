@@ -264,6 +264,13 @@ namespace VisualEffects
     void display_splash_screen(const Vector2& pos, const bool& condition);
 
 
+    /*float GetRandomFloat(float min, float max)
+    {
+        float normal = static_cast<float>(GetRandomValue(0, 10000)) / 10000.f;
+        return min + normal * (max - min);
+    }*/
+
+
     // creating a seperate namespace for particles which consists of a Component struct and Manager class
     // Three Types accepted: Circle, Texture2D, Animations::One_D
     namespace Particles
@@ -306,23 +313,6 @@ namespace VisualEffects
                     allocate_memory(comp.velocities); 
                     allocate_memory(comp.life_time);
                     allocate_memory(comp.color);
-                }
-
-                void load_data(const Vector2& pos)
-                {
-                    for (auto i{0uz}; i < max_particles; ++i)
-                    {
-                        comp.particle_circles[i] = {pos.x, pos.y, 5.f};
-
-                        float vel_x_range = GetRandomValue(-7, 8), vel_y_range = GetRandomValue(-4, 5);
-                        comp.velocities[i] = {
-                            static_cast<float>(vel_x_range), static_cast<float>(vel_y_range)
-                        } ;
-
-                        comp.life_time[i] = 5.f;
-                        comp.color[i] = WHITE;
-                    }
-
                 }
 
                 ~ParticleManager()
